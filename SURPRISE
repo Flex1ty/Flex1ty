@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compte à rebours</title>
+</head>
+<body>
+  <div id="compteARebours">
+    <h1>Compte à rebours :</h1>
+    <p id="tempsRestant">00:00:00</p>
+    <div id="contenuCache" style="display: none;">
+      <!-- Insérez ici le contenu que vous souhaitez afficher une fois le compte à rebours terminé -->
+      <p>Le temps est écoulé !</p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+JavaScript (dans un fichier nommé "script.js" ou directement dans la balise <script> de la page HTML) :
+
+javascript
+
+const tempsCible = new Date('2023-08-04T00:00:00').getTime(); // Remplacez la date par celle souhaitée au format 'AAAA-MM-JJThh:mm:ss'
+
+const actualiserCompteARebours = setInterval(() => {
+  const maintenant = new Date().getTime();
+  const tempsRestant = tempsCible - maintenant;
+
+  const jours = Math.floor(tempsRestant / (1000 * 60 * 60 * 24));
+  const heures = Math.floor((tempsRestant % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((tempsRestant % (1000 * 60 * 60)) / (1000 * 60));
+  const secondes = Math.floor((tempsRestant % (1000 * 60)) / 1000);
+
+  document.getElementById('tempsRestant').innerHTML = `${jours.toString().padStart(2, '0')}:${heures.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondes.toString().padStart(2, '0')}`;
+
+  if (tempsRestant < 0) {
+    clearInterval(actualiserCompteARebours);
+    document.getElementById('tempsRestant').innerHTML = 'Temps écoulé !';
+    document.getElementById('contenuCache').style.display = 'block';
+  }
+}, 1000);
